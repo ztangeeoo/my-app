@@ -69,6 +69,7 @@ async function fetchPosts(subreddit) {
   const url = `https://www.reddit.com/r/${subreddit}/hot.json?limit=25&raw_json=1`;
   
   // 灏濊瘯鏂瑰紡
+  console.log('     尝试 ' + attempts.length + ' 种方式获取 Reddit...');
   const attempts = [
     // 1. 鐩磋繛 fetch
     async () => {
@@ -206,4 +207,5 @@ async function main() {
 }
 
 main().catch(console.error);
+
 
