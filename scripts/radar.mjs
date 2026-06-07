@@ -65,61 +65,50 @@ async function saveToSupabase(post, analysis, deep) {
 }
 
 // ===== Reddit 鎶撳彇锛堝鏂瑰紡锛?=====
-async function fetchPosts(subreddit) {
+async async function fetchPosts(subreddit) {
   const url = `https://www.reddit.com/r/${subreddit}/hot.json?limit=25&raw_json=1`;
   
-  // 灏濊瘯鏂瑰紡
-  console.log('     尝试 ' + attempts.length + ' 种方式获取 Reddit...');
-  const attempts = [
-    // 1. 鐩磋繛 fetch
-    async () => {
-      const resp = await fetch(url, {
-        headers: { 'User-Agent': 'DemandRadar/1.0' },
-        signal: AbortSignal.timeout(10000)
-      });
-      return resp.ok ? await resp.json() : null;
-    },
-    // 2. ghproxy 浠ｇ悊
-    async () => {
-      const resp = await fetch(
-        url.replace('https://www.reddit.com', 'https://ghproxy.net/https://www.reddit.com'),
-        { signal: AbortSignal.timeout(15000) }
-      );
-      return resp.ok ? await resp.json() : null;
-    },
-    // 3. curl 鐩磋繛
-    async () => {
-      const { execSync } = await import('child_process');
-      const out = execSync(
-        `curl.exe -sL --connect-timeout 10 --max-time 20 "${url}" -H "User-Agent: DemandRadar/1.0"`,
-        { encoding: 'utf-8', timeout: 25000 }
-      );
-      return JSON.parse(out);
-    },
-  ];
-
-  for (const fn of attempts) {
-    try {
-      const data = await fn();
-      if (data?.data?.children) {
-        return data.data.children
-          .filter(c => c.kind === 't3')
-          .map(c => ({
-            id: c.data.id,
-            title: c.data.title,
-            text: (c.data.selftext || '').substring(0, 500),
-            url: `https://reddit.com${c.data.permalink}`,
-            subreddit,
-            score: c.data.score,
-            comments: c.data.num_comments,
-          }));
-      }
-    } catch {}
-  }
+  // 方式1: curl 直连
+  try {
+    const { execSync } = await import('child_process');
+    const out = execSync(`curl -sL --connect-timeout 8 --max-time 15 "${url}" -H "User-Agent: Mozilla/5.0 (compatible; DemandRadar/1.0)"`, 
+      { encoding: 'utf-8', timeout: 20000 });
+    const data = JSON.parse(out);
+    if (data?.data?.children?.length > 0) return parseChildren(data.data.children, subreddit);
+  } catch {}
+  
+  // 方式2: curl 通过代理
+  try {
+    const { execSync } = await import('child_process');
+    const proxyUrl = url.replace('https://www.reddit.com', 'https://ghproxy.net/https://www.reddit.com');
+    const out = execSync(`curl -sL --connect-timeout 8 --max-time 20 "${proxyUrl}"`, 
+      { encoding: 'utf-8', timeout: 25000 });
+    const data = JSON.parse(out);
+    if (data?.data?.children?.length > 0) return parseChildren(data.data.children, subreddit);
+  } catch {}
+  
+  // 方式3: fetch 兜底
+  try {
+    const resp = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DemandRadar/1.0)' },
+      signal: AbortSignal.timeout(8000)
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data?.data?.children?.length > 0) return parseChildren(data.data.children, subreddit);
+    }
+  } catch {}
   return [];
 }
 
-// ===== 闇€姹備俊鍙疯瘎鍒?=====
+function parseChildren(children, subreddit) {
+  return children.filter(c => c.kind === 't3').map(c => ({
+    id: c.data.id, title: c.data.title,
+    text: (c.data.selftext || '').substring(0, 500),
+    url: `https://reddit.com${c.data.permalink}`,
+    subreddit, score: c.data.score, comments: c.data.num_comments,
+  }));
+}
 function scorePost(post) {
   const text = (post.title + ' ' + (post.text || '')).toLowerCase();
   let score = 0;
@@ -207,5 +196,6 @@ async function main() {
 }
 
 main().catch(console.error);
+
 
 
