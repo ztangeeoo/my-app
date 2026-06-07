@@ -1,0 +1,26 @@
+name: 🛰️ 需求雷达扫描
+
+on:
+  schedule:
+    # 每天 8:00 / 20:00 北京时间运行
+    - cron: '0 0,12 * * *'
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - name: 运行需求雷达扫描
+        run: node scripts/radar.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
