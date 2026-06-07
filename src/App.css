@@ -1,0 +1,244 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+.page-center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.card h1 {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #888;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+input:focus, textarea:focus {
+  border-color: #3b82f6;
+}
+
+.btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  background: #3b82f6;
+  color: white;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #2563eb;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #d1d5db;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #666;
+  flex: 0;
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.btn-outline:hover {
+  background: #f5f5f5;
+}
+
+.btn-small {
+  background: none;
+  color: #999;
+  flex: 0;
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+.btn-small:hover {
+  color: #ef4444;
+  background: #fee2e2;
+  border-radius: 4px;
+}
+
+.msg {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fef3c7;
+  font-size: 13px;
+  text-align: center;
+}
+
+.setup-tip {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #666;
+}
+
+.setup-tip summary {
+  cursor: pointer;
+  color: #3b82f6;
+}
+
+.setup-tip ol {
+  margin-top: 8px;
+  padding-left: 20px;
+}
+
+.setup-tip code {
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+/* Dashboard */
+.page {
+  min-height: 100vh;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.header h1 {
+  font-size: 22px;
+}
+
+.header > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-badge {
+  font-size: 13px;
+  color: #888;
+}
+
+.note-form {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.loading, .empty {
+  text-align: center;
+  color: #999;
+  padding: 40px;
+}
+
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.note-card {
+  background: white;
+  padding: 16px 20px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.note-card h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.note-card p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.note-date {
+  font-size: 12px;
+  color: #bbb;
+}
+
+.footer {
+  text-align: center;
+  padding: 40px 0 20px;
+  font-size: 13px;
+  color: #bbb;
+}
